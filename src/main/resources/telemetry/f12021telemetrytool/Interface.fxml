@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane prefHeight="804.0" prefWidth="1444.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="telemetry.f12021telemetrytool.view.ApplicationController">
+   <content>
+    <AnchorPane prefHeight="793.0" prefWidth="794.0">
+         <children>
+            <TableView fx:id="raceTable" layoutX="28.0" layoutY="255.0" onMouseClicked="#getExtendedPlayerInformation" prefHeight="473.0" prefWidth="1052.0" visible="false">
+              <columns>
+                  <TableColumn fx:id="carPositionRace" prefWidth="65.0" text="Позиция" />
+                <TableColumn fx:id="nameRace" prefWidth="118.0" text="Имя" />
+                <TableColumn fx:id="deltaRace" prefWidth="76.0" text="Разница" />
+                  <TableColumn fx:id="tyreRace" prefWidth="143.0" text="Резина" />
+                  <TableColumn fx:id="sector1Race" prefWidth="67.0" text="Сектор 1" />
+                  <TableColumn fx:id="sector2Race" prefWidth="65.0" text="Сектор 2" />
+                  <TableColumn fx:id="sector3Race" prefWidth="62.0" text="Сектор 3" />
+                  <TableColumn fx:id="lastLapRace" prefWidth="118.0" text="Предыдущий круг" />
+                  <TableColumn fx:id="warningRace" prefWidth="112.0" text="Предупреждения" />
+                  <TableColumn fx:id="penaltyRace" prefWidth="58.0" text="Штрафы" />
+                  <TableColumn fx:id="driverStatusRace" prefWidth="92.0" />
+                  <TableColumn fx:id="resultStatusRace" prefWidth="75.0" />
+              </columns>
+            </TableView>
+            <TableView fx:id="qualiTable" layoutX="28.0" layoutY="255.0" prefHeight="475.0" prefWidth="1051.0" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="255.0">
+              <columns>
+                <TableColumn fx:id="carPositionQuali" prefWidth="67.0" text="Позиция" />
+                <TableColumn fx:id="nameQuali" prefWidth="136.0" text="Имя" />
+                  <TableColumn fx:id="fastestLapQuali" prefWidth="111.0" text="Лучший круг" />
+                  <TableColumn fx:id="deltaQuali" prefWidth="90.0" text="Разница" />
+                  <TableColumn fx:id="sector1Quali" prefWidth="97.0" text="Сектор 1" />
+                  <TableColumn fx:id="sector2Quali" prefWidth="98.0" text="Сектор 2" />
+                  <TableColumn fx:id="sector3Quali" prefWidth="87.0" text="Сектор 3" />
+                  <TableColumn fx:id="tyreOnFastestLapQuali" prefWidth="135.0" text="Резина" />
+                  <TableColumn fx:id="driverStatusQuali" prefWidth="113.0" />
+                  <TableColumn fx:id="resultStatusQuali" prefWidth="114.0" />
+              </columns>
+            </TableView>
+            <MenuBar AnchorPane.rightAnchor="1050.0">
+              <menus>
+                <Menu mnemonicParsing="false" text="Квалификация">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#startQuali" text="Старт" />
+                        <MenuItem mnemonicParsing="false" onAction="#stopQuali" text="Стоп" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Гонка">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#startRace" text="Старт" />
+                        <MenuItem mnemonicParsing="false" onAction="#stopRace" text="Стоп" />
+                        <MenuItem mnemonicParsing="false" onAction="#stopExtendedPlayerInformation" text="Стоп расширенная информация" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Заезд на время">
+                  <items>
+                        <MenuItem mnemonicParsing="false" onAction="#rivalIndexCalibration" text="Калибровка" />
+                    <MenuItem mnemonicParsing="false" onAction="#loadTimeTrialLap" text="Записать круг" />
+                        <MenuItem mnemonicParsing="false" onAction="#showLineCharts" text="Показать графики" />
+                        <MenuItem mnemonicParsing="false" onAction="#hideLineCharts" text="Скрыть графики" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Графики">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#removeRivalLine" text="Скрыть графики соперника" />
+                        <MenuItem mnemonicParsing="false" onAction="#addRivalLine" text="Показать графики соперника" />
+                        <MenuItem mnemonicParsing="false" onAction="#removePlayerLine" text="Скрыть графики игрока" />
+                        <MenuItem mnemonicParsing="false" onAction="#addPlayerLine" text="Показать графики игрока" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Погода">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#loadWeather" text="Загрузить" />
+                     </items></Menu>
+              </menus>
+            </MenuBar>
+            <AnchorPane fx:id="weatherAnchorPane" layoutX="17.0" layoutY="51.0" prefHeight="212.0" prefWidth="1080.0">
+               <children>
+                  <Text layoutX="44.5" layoutY="113.1806640625" strokeType="OUTSIDE" strokeWidth="0.0" text="Воздух">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="45.5" layoutY="154.1806640625" strokeType="OUTSIDE" strokeWidth="0.0" text="Трасса">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="46.5" layoutY="188.1806640625" strokeType="OUTSIDE" strokeWidth="0.0" text="Дождь">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="973.5" layoutY="114.1806640625" strokeType="OUTSIDE" strokeWidth="0.0" text="Воздух">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="974.365234375" layoutY="154.1806640625" strokeType="OUTSIDE" strokeWidth="0.0" text="Трасса">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="975.1875" layoutY="190.1806640625" strokeType="OUTSIDE" strokeWidth="0.0" text="Дождь">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="weatherOffset1" layoutX="166.5" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="weatherOffset2" layoutX="281.5" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="weatherOffset3" layoutX="403.5" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="weatherOffset4" layoutX="522.5" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="weatherOffset5" layoutX="643.5" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="weatherOffset6" layoutX="764.5" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="weatherOffset7" layoutX="889.5" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <ImageView fx:id="weatherIcon1" fitHeight="64.0" fitWidth="64.0" layoutX="138.5" layoutY="15.3447265625" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="19.3447265625" />
+                  <ImageView fx:id="weatherIcon2" fitHeight="64.0" fitWidth="64.0" layoutX="258.5" layoutY="19.3447265625" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="19.3447265625" />
+                  <ImageView fx:id="weatherIcon3" fitHeight="64.0" fitWidth="64.0" layoutX="384.5" layoutY="21.3447265625" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="19.3447265625" />
+                  <ImageView fx:id="weatherIcon4" fitHeight="64.0" fitWidth="64.0" layoutX="501.5" layoutY="18.3447265625" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="19.3447265625" />
+                  <ImageView fx:id="weatherIcon5" fitHeight="64.0" fitWidth="64.0" layoutX="622.5" layoutY="20.3447265625" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="19.3447265625" />
+                  <ImageView fx:id="weatherIcon6" fitHeight="64.0" fitWidth="64.0" layoutX="750.5" layoutY="20.3447265625" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="19.3447265625" />
+                  <ImageView fx:id="weatherIcon7" fitHeight="64.0" fitWidth="64.0" layoutX="876.5" layoutY="20.3447265625" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="19.3447265625" />
+                  <Text fx:id="airTemperature1" layoutX="168.5" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="airTemperature2" layoutX="288.5" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="airTemperature3" layoutX="412.5" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="airTemperature4" layoutX="531.5" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="airTemperature5" layoutX="653.5" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="airTemperature6" layoutX="777.5" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="airTemperature7" layoutX="903.5" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="trackTemperature1" layoutX="168.5" layoutY="150.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="trackTemperature2" layoutX="288.5" layoutY="152.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="trackTemperature3" layoutX="413.5" layoutY="151.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="trackTemperature4" layoutX="532.5" layoutY="151.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="trackTemperature5" layoutX="654.5" layoutY="151.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="trackTemperature6" layoutX="778.5" layoutY="152.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="trackTemperature7" layoutX="903.5" layoutY="152.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="rain1" layoutX="167.5" layoutY="186.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="rain2" layoutX="289.5" layoutY="188.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="rain3" layoutX="413.5" layoutY="187.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="rain4" layoutX="532.5" layoutY="187.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="rain5" layoutX="654.5" layoutY="187.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="rain6" layoutX="778.5" layoutY="187.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" text="1" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="rain7" layoutX="904.5" layoutY="188.6552734375" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="weatherSession" layoutX="10.0" layoutY="46.1806640625" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Button layoutY="130.3447265625" mnemonicParsing="false" onAction="#scrollWeatherBackward" text="&lt;">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="1047.0" layoutY="129.3447265625" mnemonicParsing="false" onAction="#scrollWeatherForward" text="&gt;">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+                  <Line endX="932.0" layoutX="101.0" layoutY="130.0" opacity="0.3" startX="-60.0" />
+                  <Line endX="932.0" layoutX="105.0" layoutY="164.0" opacity="0.3" startX="-60.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="sessionInfoAnchorPane" layoutX="323.0" layoutY="753.0">
+               <children>
+                  <Text fx:id="trackName" layoutY="29.41796875" strokeType="OUTSIDE" strokeWidth="0.0" text="Suzuka International Racing Course" textAlignment="CENTER" wrappingWidth="453.064453125">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="sessionType" layoutX="-122.0" layoutY="-1.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Короткая квалификация" textAlignment="RIGHT" wrappingWidth="331.998046875">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="sessionTime" layoutX="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5 / 27" wrappingWidth="82.783203125">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" textAlignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="extendedInfoAnchorPane" layoutX="1106.0" layoutY="45.41796875" visible="false">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Расширенная информация">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="name" layoutX="21.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VETTEL" textAlignment="CENTER" wrappingWidth="201.26171875">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="92.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Резина" textAlignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="89.0" layoutY="197.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Крылья" textAlignment="CENTER">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="48.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Последние круги">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="86.0" layoutY="578.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Разница">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="40.0" layoutY="116.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="ЛП">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="40.0" layoutY="160.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="ЛЗ">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="178.0" layoutY="116.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="ПП">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="181.0" layoutY="157.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="ПЗ">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="24.0" layoutY="236.986328125" strokeType="OUTSIDE" strokeWidth="0.0" text="переднее">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="152.0" layoutY="236.986328125" strokeType="OUTSIDE" strokeWidth="0.0" text="заднее">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="74.0" layoutY="359.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="круг - ">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="74.0" layoutY="391.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="круг - ">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="73.0" layoutY="425.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="круг - ">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="73.0" layoutY="459.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="круг - ">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="73.0" layoutY="497.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="круг - ">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="45.0" layoutY="530.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="лучший - ">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="10.0" layoutY="618.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="позиция соперника">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="59.0" layoutY="706.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="твоя позиция">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="leftFrontTyreTemperature" layoutX="81.0" layoutY="117.31640625" strokeType="OUTSIDE" strokeWidth="0.0" text="95">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="leftRearTyreTemperature" layoutX="81.0" layoutY="160.31640625" strokeType="OUTSIDE" strokeWidth="0.0" text="97">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="rightFrontTyreTemperature" layoutX="148.0" layoutY="117.31640625" strokeType="OUTSIDE" strokeWidth="0.0" text="98">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="rightRearTyreTemperature" layoutX="148.0" layoutY="160.31640625" strokeType="OUTSIDE" strokeWidth="0.0" text="95">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="frontWing" layoutX="54.0" layoutY="268.31640625" strokeType="OUTSIDE" strokeWidth="0.0" text="9">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="rearWing" layoutX="174.0" layoutY="267.31640625" strokeType="OUTSIDE" strokeWidth="0.0" text="7">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="lastLapNumber1" layoutX="41.0" layoutY="359.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="8">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="lastLapNumber2" layoutX="42.0" layoutY="391.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="7">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="lastLapNumber3" layoutX="42.0" layoutY="425.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="6">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="lastLapNumber4" layoutX="43.0" layoutY="459.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="5">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="lastLapNumber5" layoutX="44.0" layoutY="497.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="4">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="lastLap1" layoutX="132.0" layoutY="361.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="1:13.261" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="lastLap2" layoutX="133.0" layoutY="393.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="1:13.291" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="lastLap3" layoutX="135.0" layoutY="427.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="1:13.205" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="lastLap4" layoutX="136.0" layoutY="461.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="1:13.165" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="lastLap5" layoutX="137.0" layoutY="499.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="1:13.200" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="bestLap" layoutX="138.0" layoutY="533.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="1:12.716" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="rivalCarPosition" layoutX="211.0" layoutY="621.2373046875" strokeType="OUTSIDE" strokeWidth="0.0" text="4">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="playerCarPosition" layoutX="211.0" layoutY="708.2373046875" strokeType="OUTSIDE" strokeWidth="0.0" text="7">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="delta" layoutX="196.0" layoutY="664.158203125" strokeType="OUTSIDE" strokeWidth="0.0" text="+ 5.421">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <ImageView fx:id="safetyCar" fitHeight="56.0" fitWidth="261.0" layoutX="26.0" layoutY="719.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="5.0" />
+            <LineChart fx:id="lineChartSpeed" layoutX="20.0" layoutY="485.0" prefHeight="286.0" prefWidth="1401.0" title="Speed" visible="false">
+              <xAxis>
+                 <NumberAxis side="BOTTOM" fx:id="xAxis" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="yAxis" side="LEFT" />
+              </yAxis>
+            </LineChart>
+            <LineChart fx:id="lineChartGear" layoutX="15.0" layoutY="25.0" prefHeight="195.0" prefWidth="1401.0" title="Gear" visible="false">
+               <xAxis>
+                  <NumberAxis side="BOTTOM" fx:id="xAxis" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis fx:id="yAxis" side="LEFT" />
+               </yAxis>
+            </LineChart>
+            <LineChart fx:id="lineChartBrake" layoutX="17.0" layoutY="210.0" prefHeight="284.0" prefWidth="1402.0" title="Brake" visible="false" AnchorPane.topAnchor="210.0">
+               <xAxis>
+                  <NumberAxis side="BOTTOM" fx:id="xAxis" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis fx:id="yAxis" side="LEFT" />
+               </yAxis>
+            </LineChart>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>
